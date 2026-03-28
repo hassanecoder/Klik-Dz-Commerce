@@ -1,0 +1,22 @@
+packages:
+  "framer-motion": "For page transitions, smooth micro-interactions, and modal animations"
+  "zustand": "For robust global state management (cart, favorites, language, theme)"
+  "clsx": "For conditional CSS class merging"
+  "tailwind-merge": "For resolving Tailwind class conflicts"
+  "lucide-react": "For crisp, modern SVG icons across the app"
+
+images:
+  - path: "artifacts/klikdz/public/images/logo.png"
+    description: "Modern minimalist geometric logo mark for 'KlikDz' e-commerce marketplace, vibrant emerald green and gold colors, transparent background, clean professional premium look"
+    aspect_ratio: "1:1"
+  - path: "artifacts/klikdz/public/images/hero-bg.png"
+    description: "Beautiful modern North African inspired abstract gradient mesh background, subtle geometric Islamic art motifs, deep emerald green and rich gold, soft lighting, premium high-end e-commerce feel"
+    aspect_ratio: "16:9"
+  - path: "artifacts/klikdz/public/images/sale-banner.png"
+    description: "Dynamic e-commerce sale banner background, 3D abstract fluid shapes, vibrant bright orange and emerald green, festive online shopping vibe, clean layout with space for text"
+    aspect_ratio: "16:9"
+
+notes:
+  - "The app uses Zustand for client-side persistence of cart and favorites (common for local e-commerce in the region)"
+  - "RTL support is dynamically controlled by a Zustand store setting document.documentElement.dir"
+  - "Assuming @workspace/api-client-react exports both hooks and types"

@@ -1,0 +1,76 @@
+I want to build an ecommerce website called KlikDz, an Algerian online marketplace where I can sell products from different categories.
+
+The platform should be designed specifically for the Algerian market and support 3 languages and light/dark theme: 
+
+Arabic (default language)
+French
+English
+The website should use beautiful, modern, and readable fonts that work well for all three languages, especially Arabic.
+
+Main Goal
+The goal is to create a complete and modern ecommerce experience for Algeria, with:
+
+multilingual support,
+realistic marketplace content,
+advanced search and filtering,
+and a smooth shopping and ordering experience.
+Required Pages
+The website should include the following pages:
+
+Homepage
+Products page
+Categories page
+Single category page
+Single product page
+Cart page
+Checkout page
+Regions page
+Sign in page
+Sign up page
+Core Features
+The website should include:
+
+A modern, attractive, and polished UI
+A rich and advanced navbar
+A nice, complete footer
+A search field for products
+Advanced filters on product listing pages
+Buttons such as:
+Add to Cart
+Add to Favorites
+Categories and Products
+The marketplace should contain realistic categories and products relevant to the Algerian market.
+
+Data Requirements
+The categories and products should be seeded into the database
+The frontend should fetch the data from the database
+The sample data should feel realistic and suitable for a real Algerian ecommerce platform
+Single Product Page Requirements
+Each product page should include:
+
+Full product details
+Product images
+Similar or related products
+Add to Cart button
+Favorite button
+Instant Order Form
+Each single product page should also include an instant order form so the user can place an order quickly without going through the full checkout process.
+
+The instant order form should contain:
+
+Full name
+Phone number
+Region / Wilaya
+City
+Full address (optional)
+Order summary
+It should also include:
+
+Instant Order button
+Add to Cart button
+Design and UX Notes
+Arabic should be the default language
+The layout should feel professional, modern, and ecommerce-focused
+Navigation should be clear and user-friendly
+The website should look rich and complete, not basic
+Filters and search should be visually polished and easy to use
