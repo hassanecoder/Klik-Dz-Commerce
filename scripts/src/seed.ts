@@ -4,19 +4,26 @@ import {
   productsTable,
   wilayasTable,
   citiesTable,
+  type InsertCategory,
+  type InsertProduct,
+  type InsertWilaya,
+  type InsertCity,
 } from "@workspace/db/schema";
 
 async function seed() {
-  console.log("Seeding database...");
+  const seedMode = process.env.SEED_MODE === "bootstrap" ? "bootstrap" : "reset";
+  console.log(`Seeding database in ${seedMode} mode...`);
 
-  // Clear existing data
-  await db.delete(productsTable);
-  await db.delete(categoriesTable);
-  await db.delete(citiesTable);
-  await db.delete(wilayasTable);
+  if (seedMode === "reset") {
+    await db.delete(productsTable);
+    await db.delete(categoriesTable);
+    await db.delete(citiesTable);
+    await db.delete(wilayasTable);
+    console.log("Cleared existing catalog and region data");
+  }
 
   // Categories
-  const categories = await db.insert(categoriesTable).values([
+  const categorySeeds: InsertCategory[] = [
     {
       name: "Electronics",
       nameAr: "إلكترونيات",
@@ -127,9 +134,24 @@ async function seed() {
       icon: "🎨",
       image: "https://images.unsplash.com/photo-1606722590583-6951b5ea92ab?w=800&q=80",
     },
-  ]).returning();
+  ];
 
-  console.log(`Inserted ${categories.length} categories`);
+  const existingCategories = seedMode === "bootstrap" ? await db.select().from(categoriesTable) : [];
+  const existingCategorySlugs = new Set(existingCategories.map((category) => category.slug));
+  const missingCategories = categorySeeds.filter((category) => !existingCategorySlugs.has(category.slug));
+
+  if (missingCategories.length > 0) {
+    await db.insert(categoriesTable).values(missingCategories);
+  }
+
+  const categories = await db.select().from(categoriesTable);
+  if (seedMode === "reset") {
+    console.log(`Inserted ${categories.length} categories`);
+  } else if (missingCategories.length > 0) {
+    console.log(`Inserted ${missingCategories.length} missing categories`);
+  } else {
+    console.log(`Skipped categories; ${categories.length} already present`);
+  }
 
   const catMap: Record<string, number> = {};
   for (const c of categories) {
@@ -137,7 +159,7 @@ async function seed() {
   }
 
   // Products - comprehensive list
-  await db.insert(productsTable).values([
+  const productSeeds: InsertProduct[] = [
     // Electronics
     {
       name: "Samsung Galaxy A54",
@@ -686,12 +708,27 @@ async function seed() {
       tags: ["berber", "carpet", "traditional", "algerian", "handmade"],
       specifications: { "Size": "150x200 cm", "Material": "Wool", "Origin": "Kabylie, Algeria", "Pattern": "Traditional Geometric" },
     },
-  ]);
+  ];
 
-  console.log("Products inserted");
+  const existingProducts = seedMode === "bootstrap" ? await db.select().from(productsTable) : [];
+  const existingProductSlugs = new Set(existingProducts.map((product) => product.slug));
+  const missingProducts = productSeeds.filter((product) => !existingProductSlugs.has(product.slug));
+
+  if (missingProducts.length > 0) {
+    await db.insert(productsTable).values(missingProducts);
+  }
+
+  const products = await db.select().from(productsTable);
+  if (seedMode === "reset") {
+    console.log(`Inserted ${products.length} products`);
+  } else if (missingProducts.length > 0) {
+    console.log(`Inserted ${missingProducts.length} missing products`);
+  } else {
+    console.log(`Skipped products; ${products.length} already present`);
+  }
 
   // Wilayas (all 48 main wilayas of Algeria)
-  const wilayas = await db.insert(wilayasTable).values([
+  const wilayaSeeds: InsertWilaya[] = [
     { code: "01", name: "Adrar", nameAr: "أدرار", nameFr: "Adrar" },
     { code: "02", name: "Chlef", nameAr: "الشلف", nameFr: "Chlef" },
     { code: "03", name: "Laghouat", nameAr: "الأغواط", nameFr: "Laghouat" },
@@ -750,12 +787,27 @@ async function seed() {
     { code: "56", name: "Djanet", nameAr: "جانت", nameFr: "Djanet" },
     { code: "57", name: "El M'Ghair", nameAr: "المغير", nameFr: "El M'Ghair" },
     { code: "58", name: "El Meniaa", nameAr: "المنيعة", nameFr: "El Meniaa" },
-  ]).returning();
+  ];
 
-  console.log(`Inserted ${wilayas.length} wilayas`);
+  const existingWilayas = seedMode === "bootstrap" ? await db.select().from(wilayasTable) : [];
+  const existingWilayaCodes = new Set(existingWilayas.map((wilaya) => wilaya.code));
+  const missingWilayas = wilayaSeeds.filter((wilaya) => !existingWilayaCodes.has(wilaya.code));
+
+  if (missingWilayas.length > 0) {
+    await db.insert(wilayasTable).values(missingWilayas);
+  }
+
+  const wilayas = await db.select().from(wilayasTable);
+  if (seedMode === "reset") {
+    console.log(`Inserted ${wilayas.length} wilayas`);
+  } else if (missingWilayas.length > 0) {
+    console.log(`Inserted ${missingWilayas.length} missing wilayas`);
+  } else {
+    console.log(`Skipped wilayas; ${wilayas.length} already present`);
+  }
 
   // Cities for major wilayas
-  await db.insert(citiesTable).values([
+  const citySeeds: InsertCity[] = [
     // Algiers (16)
     { name: "Algiers Center", nameAr: "وسط الجزائر", nameFr: "Alger Centre", wilayaCode: "16" },
     { name: "Bab El Oued", nameAr: "باب الواد", nameFr: "Bab El Oued", wilayaCode: "16" },
@@ -855,9 +907,24 @@ async function seed() {
     { name: "Djanet", nameAr: "جانت", nameFr: "Djanet", wilayaCode: "56" },
     { name: "El M'Ghair", nameAr: "المغير", nameFr: "El M'Ghair", wilayaCode: "57" },
     { name: "El Meniaa", nameAr: "المنيعة", nameFr: "El Meniaa", wilayaCode: "58" },
-  ]);
+  ];
 
-  console.log("Cities inserted");
+  const existingCities = seedMode === "bootstrap" ? await db.select().from(citiesTable) : [];
+  const existingCityKeys = new Set(existingCities.map((city) => `${city.wilayaCode}:${city.name}`));
+  const missingCities = citySeeds.filter((city) => !existingCityKeys.has(`${city.wilayaCode}:${city.name}`));
+
+  if (missingCities.length > 0) {
+    await db.insert(citiesTable).values(missingCities);
+  }
+
+  const cities = await db.select().from(citiesTable);
+  if (seedMode === "reset") {
+    console.log(`Inserted ${cities.length} cities`);
+  } else if (missingCities.length > 0) {
+    console.log(`Inserted ${missingCities.length} missing cities`);
+  } else {
+    console.log(`Skipped cities; ${cities.length} already present`);
+  }
   console.log("✅ Seed complete!");
 }
 
