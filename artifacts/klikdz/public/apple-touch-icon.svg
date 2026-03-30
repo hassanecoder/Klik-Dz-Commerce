@@ -1,4 +1,15 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="180" height="180" fill="#E11D48"/>
-  <text x="90" y="90" dominant-baseline="central" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="96" fill="#FFFFFF">K</text>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E11D48"/>
+      <stop offset="1" stop-color="#BE123C"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" fill="url(#bg)"/>
+  <!-- Shopping bag body -->
+  <path d="M50 72L56 145C56.5 150 60.5 154 65.5 154H114.5C119.5 154 123.5 150 124 145L130 72H50Z" fill="white" fill-opacity="0.95"/>
+  <!-- Bag handles -->
+  <path d="M72 72V52C72 41 80 32 90 32C100 32 108 41 108 52V72" stroke="white" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <!-- Cursor click arrow -->
+  <path d="M125 30L125 65L135 56L143 72L150 69L142 53L152 50Z" fill="#FFF1F2" fill-opacity="0.9"/>
 </svg>
